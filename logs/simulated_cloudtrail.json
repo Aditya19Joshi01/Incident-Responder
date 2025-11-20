@@ -1,0 +1,94 @@
+[
+  {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAIOSFODNN7EXAMPLE",
+      "arn": "arn:aws:iam::123456789012:user/suspicious-user",
+      "accountId": "123456789012",
+      "userName": "suspicious-user"
+    },
+    "eventTime": "2025-02-20T11:30:00Z",
+    "eventSource": "sts.amazonaws.com",
+    "eventName": "GetSessionToken",
+    "awsRegion": "us-west-2",
+    "sourceIPAddress": "192.0.2.15",
+    "userAgent": "aws-cli/2.0.0",
+    "requestParameters": null,
+    "responseElements": {
+      "GetSessionTokenResponse": {
+        "GetSessionTokenResult": {
+          "Credentials": {
+            "AccessKeyId": "ASIAIOSFODNN7EXAMPLE",
+            "Expiration": "2025-02-20T12:30:00Z"
+          }
+        }
+      }
+    },
+    "requestID": "12345678-1234-1234-1234-123456789012",
+    "eventID": "example-event-id-1",
+    "readOnly": false,
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  },
+  {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAIOSFODNN7EXAMPLE",
+      "arn": "arn:aws:iam::123456789012:user/data-analyst",
+      "accountId": "123456789012",
+      "userName": "data-analyst"
+    },
+    "eventTime": "2025-02-20T09:15:00Z",
+    "eventSource": "s3.amazonaws.com",
+    "eventName": "GetObject",
+    "awsRegion": "eu-west-1",
+    "sourceIPAddress": "203.0.113.50",
+    "userAgent": "aws-cli/2.0.0",
+    "requestParameters": {
+      "bucketName": "sensitive-data-bucket",
+      "key": "confidential/reports/2025/financial-data.xlsx"
+    },
+    "responseElements": null,
+    "requestID": "87654321-4321-4321-4321-210987654321",
+    "eventID": "example-event-id-2",
+    "readOnly": true,
+    "eventType": "AwsApiCall",
+    "managementEvent": false,
+    "recipientAccountId": "123456789012"
+  },
+  {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "AssumedRole",
+      "principalId": "AROAEXAMPLE:ec2-instance",
+      "arn": "arn:aws:sts::123456789012:assumed-role/EC2InstanceProfile/i-0123456789abcdef0",
+      "accountId": "123456789012"
+    },
+    "eventTime": "2025-02-20T12:15:00Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "DescribeInstances",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "10.0.1.100",
+    "userAgent": "aws-sdk-java/1.11.0",
+    "requestParameters": {
+      "instancesSet": {
+        "items": [
+          {
+            "instanceId": "i-0123456789abcdef0"
+          }
+        ]
+      }
+    },
+    "responseElements": null,
+    "requestID": "11223344-5566-7788-9900-aabbccddeeff",
+    "eventID": "example-event-id-3",
+    "readOnly": true,
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+]
+

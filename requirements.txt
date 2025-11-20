@@ -1,0 +1,10 @@
+# Core dependencies
+numpy>=1.24.0
+openai>=1.0.0  # Optional - for OpenAI embeddings
+
+# Database
+# SQLite is included in Python standard library
+
+# Logging and utilities
+# All other utilities are standard library
+

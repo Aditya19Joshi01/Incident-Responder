@@ -1,0 +1,99 @@
+[
+  {
+    "technique_id": "T1595",
+    "name": "Active Scanning",
+    "description": "Adversaries may scan victim infrastructure to gather information that can be used during targeting. Active scanning can be used to detect open ports, services, and vulnerabilities.",
+    "tactic": "Reconnaissance",
+    "platform": "Cloud",
+    "data_sources": ["Network Traffic", "Application Logs"]
+  },
+  {
+    "technique_id": "T1046",
+    "name": "Network Service Scanning",
+    "description": "Adversaries may scan for open ports and services to identify running services and potential vulnerabilities.",
+    "tactic": "Discovery",
+    "platform": "Cloud",
+    "data_sources": ["Network Traffic", "Process Monitoring"]
+  },
+  {
+    "technique_id": "T1071",
+    "name": "Application Layer Protocol",
+    "description": "Adversaries may communicate using application layer protocols to avoid detection/network filtering by blending in with existing traffic.",
+    "tactic": "Command and Control",
+    "platform": "Cloud",
+    "data_sources": ["Network Traffic", "Packet Capture"]
+  },
+  {
+    "technique_id": "T1105",
+    "name": "Ingress Tool Transfer",
+    "description": "Adversaries may transfer tools or other files from an external system into a compromised environment.",
+    "tactic": "Command and Control",
+    "platform": "Cloud",
+    "data_sources": ["Network Traffic", "File Monitoring"]
+  },
+  {
+    "technique_id": "T1078",
+    "name": "Valid Accounts",
+    "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+    "tactic": "Initial Access",
+    "platform": "Cloud",
+    "data_sources": ["Authentication Logs", "Cloud Service Logs"]
+  },
+  {
+    "technique_id": "T1078.004",
+    "name": "Cloud Accounts",
+    "description": "Adversaries may obtain and abuse credentials of cloud accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+    "tactic": "Initial Access",
+    "platform": "Cloud",
+    "data_sources": ["Cloud Service Logs", "Authentication Logs"]
+  },
+  {
+    "technique_id": "T1081",
+    "name": "Credentials in Files",
+    "description": "Adversaries may search for credentials stored in files on compromised systems.",
+    "tactic": "Credential Access",
+    "platform": "Cloud",
+    "data_sources": ["File Monitoring", "Process Monitoring"]
+  },
+  {
+    "technique_id": "T1110",
+    "name": "Brute Force",
+    "description": "Adversaries may use brute force techniques to gain access to accounts when passwords are unknown or when password hashes are obtained.",
+    "tactic": "Credential Access",
+    "platform": "Cloud",
+    "data_sources": ["Authentication Logs", "Application Logs"]
+  },
+  {
+    "technique_id": "T1537",
+    "name": "Transfer Data to Cloud Account",
+    "description": "Adversaries may exfiltrate data by transferring it to a cloud account they control.",
+    "tactic": "Exfiltration",
+    "platform": "Cloud",
+    "data_sources": ["Cloud Service Logs", "Network Traffic"]
+  },
+  {
+    "technique_id": "T1041",
+    "name": "Exfiltration Over C2 Channel",
+    "description": "Adversaries may steal data by exfiltrating it over an existing command and control channel.",
+    "tactic": "Exfiltration",
+    "platform": "Cloud",
+    "data_sources": ["Network Traffic", "Process Monitoring"]
+  },
+  {
+    "technique_id": "T1484",
+    "name": "Domain Policy Modification",
+    "description": "Adversaries may modify domain policies to maintain persistence or evade defenses.",
+    "tactic": "Persistence",
+    "platform": "Cloud",
+    "data_sources": ["Cloud Service Logs", "Policy Logs"]
+  },
+  {
+    "technique_id": "T1496",
+    "name": "Resource Hijacking",
+    "description": "Adversaries may leverage cloud resources for cryptocurrency mining or other resource-intensive tasks.",
+    "tactic": "Impact",
+    "platform": "Cloud",
+    "data_sources": ["Cloud Service Logs", "Process Monitoring"]
+  }
+]
+

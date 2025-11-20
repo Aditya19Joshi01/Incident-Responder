@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "2.0",
+  "accountId": "123456789012",
+  "region": "us-west-2",
+  "partition": "aws",
+  "id": "b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7",
+  "arn": "arn:aws:guardduty:us-west-2:123456789012:detector/def456ghi789/finding/b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7",
+  "type": "UnauthorizedAPICall:IAMUser/InstanceCredentialExfiltration",
+  "resource": {
+    "resourceType": "AccessKey",
+    "accessKeyDetails": {
+      "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+      "principalId": "AIDAIOSFODNN7EXAMPLE",
+      "userName": "suspicious-user",
+      "userType": "IAMUser"
+    }
+  },
+  "service": {
+    "serviceName": "guardduty",
+    "detectorId": "def456ghi789",
+    "action": {
+      "actionType": "AWS_API_CALL",
+      "awsApiCallAction": {
+        "api": "GetSessionToken",
+        "serviceName": "sts",
+        "callerType": "Remote IP",
+        "remoteIpDetails": {
+          "ipAddressV4": "192.0.2.15",
+          "organization": {
+            "asn": "64513",
+            "asnOrg": "Suspicious ISP",
+            "isp": "Suspicious ISP",
+            "org": "Suspicious Organization"
+          },
+          "country": {
+            "countryName": "Unknown"
+          },
+          "city": {
+            "cityName": "Unknown"
+          },
+          "geoLocation": {
+            "lat": 0.0,
+            "lon": 0.0
+          }
+        },
+        "affectedResources": {}
+      }
+    },
+    "resourceRole": "TARGET",
+    "additionalInfo": {
+      "value": "{\"unusual\":true,\"invocationCount\":50}",
+      "type": "default"
+    },
+    "eventFirstSeen": "2025-02-20T11:00:00.000Z",
+    "eventLastSeen": "2025-02-20T11:45:00.000Z",
+    "archived": false,
+    "count": 50
+  },
+  "severity": 7.5,
+  "createdAt": "2025-02-20T11:00:00.000Z",
+  "updatedAt": "2025-02-20T11:45:00.000Z",
+  "title": "API GetSessionToken was invoked from an unusual location.",
+  "description": "API GetSessionToken was invoked from an unusual location by IAM user suspicious-user. This could indicate credential exfiltration."
+}
+

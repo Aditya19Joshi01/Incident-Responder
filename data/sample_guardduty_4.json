@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "2.0",
+  "accountId": "123456789012",
+  "region": "ap-southeast-1",
+  "partition": "aws",
+  "id": "d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9",
+  "arn": "arn:aws:guardduty:ap-southeast-1:123456789012:detector/jkl012mno345/finding/d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9",
+  "type": "Backdoor:EC2/DenialOfService.Tcp",
+  "resource": {
+    "resourceType": "Instance",
+    "instanceDetails": {
+      "instanceId": "i-9876543210fedcba",
+      "instanceType": "t3.medium",
+      "launchTime": "2025-02-18T14:00:00.000Z",
+      "platform": null,
+      "productCodes": [],
+      "iamInstanceProfile": {
+        "arn": "arn:aws:iam::123456789012:instance-profile/AppServerProfile",
+        "id": "AIPAIEXAMPLE456"
+      },
+      "networkInterfaces": [
+        {
+          "subnetId": "subnet-9876543210fedcba",
+          "privateIpAddresses": [
+            {
+              "privateIpAddress": "10.0.2.50"
+            }
+          ],
+          "publicIp": "203.0.113.100",
+          "networkInterfaceId": "eni-9876543210fedcba",
+          "securityGroups": [
+            {
+              "groupId": "sg-9876543210fedcba",
+              "groupName": "app-server-sg"
+            }
+          ],
+          "ipv6Addresses": [],
+          "publicDnsName": "ec2-203-0-113-100.compute-1.amazonaws.com",
+          "vpcId": "vpc-9876543210fedcba"
+        }
+      ],
+      "tags": [
+        {
+          "key": "Name",
+          "value": "AppServer-02"
+        },
+        {
+          "key": "Environment",
+          "value": "Production"
+        }
+      ],
+      "instanceState": "running"
+    }
+  },
+  "service": {
+    "serviceName": "guardduty",
+    "detectorId": "jkl012mno345",
+    "action": {
+      "actionType": "NETWORK_CONNECTION",
+      "networkConnectionAction": {
+        "connectionDirection": "OUTBOUND",
+        "remoteIpDetails": {
+          "ipAddressV4": "198.51.100.100",
+          "organization": {
+            "asn": "64515",
+            "asnOrg": "Malicious Network",
+            "isp": "Malicious ISP",
+            "org": "Malicious Organization"
+          },
+          "country": {
+            "countryName": "Unknown"
+          },
+          "city": {
+            "cityName": "Unknown"
+          },
+          "geoLocation": {
+            "lat": 0.0,
+            "lon": 0.0
+          }
+        },
+        "remotePortDetails": {
+          "port": 80,
+          "portName": "HTTP"
+        },
+        "localPortDetails": {
+          "port": 443,
+          "portName": "HTTPS"
+        },
+        "protocol": "TCP"
+      }
+    },
+    "resourceRole": "TARGET",
+    "additionalInfo": {
+      "value": "{\"attackType\":\"DoS\",\"packetCount\":10000}",
+      "type": "default"
+    },
+    "eventFirstSeen": "2025-02-20T13:00:00.000Z",
+    "eventLastSeen": "2025-02-20T13:15:00.000Z",
+    "archived": false,
+    "count": 10000
+  },
+  "severity": 9.0,
+  "createdAt": "2025-02-20T13:00:00.000Z",
+  "updatedAt": "2025-02-20T13:15:00.000Z",
+  "title": "EC2 instance i-9876543210fedcba is performing denial of service attacks.",
+  "description": "EC2 instance i-9876543210fedcba is performing denial of service attacks against remote host 198.51.100.100."
+}
+

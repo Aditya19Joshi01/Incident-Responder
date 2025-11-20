@@ -1,0 +1,67 @@
+[
+  {
+    "version": 2,
+    "account-id": "123456789012",
+    "interface-id": "eni-0123456789abcdef0",
+    "srcaddr": "10.0.1.100",
+    "dstaddr": "198.51.100.42",
+    "srcport": 49152,
+    "dstport": 22,
+    "protocol": 6,
+    "packets": 150,
+    "bytes": 45000,
+    "start": 1737468000,
+    "end": 1737470000,
+    "action": "ACCEPT",
+    "log-status": "OK"
+  },
+  {
+    "version": 2,
+    "account-id": "123456789012",
+    "interface-id": "eni-0123456789abcdef0",
+    "srcaddr": "10.0.1.100",
+    "dstaddr": "198.51.100.42",
+    "srcport": 49153,
+    "dstport": 80,
+    "protocol": 6,
+    "packets": 200,
+    "bytes": 60000,
+    "start": 1737468000,
+    "end": 1737470000,
+    "action": "ACCEPT",
+    "log-status": "OK"
+  },
+  {
+    "version": 2,
+    "account-id": "123456789012",
+    "interface-id": "eni-0123456789abcdef0",
+    "srcaddr": "10.0.1.100",
+    "dstaddr": "198.51.100.42",
+    "srcport": 49154,
+    "dstport": 443,
+    "protocol": 6,
+    "packets": 100,
+    "bytes": 30000,
+    "start": 1737468000,
+    "end": 1737470000,
+    "action": "ACCEPT",
+    "log-status": "OK"
+  },
+  {
+    "version": 2,
+    "account-id": "123456789012",
+    "interface-id": "eni-9876543210fedcba",
+    "srcaddr": "10.0.2.50",
+    "dstaddr": "198.51.100.100",
+    "srcport": 443,
+    "dstport": 80,
+    "protocol": 6,
+    "packets": 10000,
+    "bytes": 5000000,
+    "start": 1737474000,
+    "end": 1737475000,
+    "action": "ACCEPT",
+    "log-status": "OK"
+  }
+]
+
