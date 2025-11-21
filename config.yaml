@@ -1,0 +1,5 @@
+ai_provider: "dummy"
+ai_endpoint: "http://localhost:1234"
+ai_api_key: null
+model_name: "local-model"
+

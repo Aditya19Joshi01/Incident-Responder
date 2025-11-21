@@ -5,6 +5,8 @@ Threat Attribution Agent - Maps suspicious activity to MITRE ATT&CK techniques.
 import logging
 from typing import Dict, Any, List
 
+from llm.factory import get_llm
+
 logger = logging.getLogger(__name__)
 
 
@@ -13,7 +15,7 @@ class ThreatAttributionAgent:
     
     def __init__(self):
         """Initialize the Threat Attribution Agent."""
-        pass
+        self.llm = get_llm()
     
     def analyze(self, forensics_summary: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -164,23 +166,38 @@ class ThreatAttributionAgent:
     def _generate_reasoning(self, alert_type: str, classification: Dict[str, Any], 
                           techniques: List[str], indicators: List[str]) -> str:
         """Generate human-readable reasoning for the attribution."""
-        reasoning_parts = [
+        default_reasoning = [
             f"Alert Type: {alert_type}",
             f"Threat Category: {classification.get('category', 'Unknown')}",
             f"Subcategory: {classification.get('subcategory', 'Unknown')}"
         ]
-        
+
         if techniques:
-            reasoning_parts.append(f"Primary MITRE Technique: {techniques[0]}")
+            default_reasoning.append(f"Primary MITRE Technique: {techniques[0]}")
             if len(techniques) > 1:
-                reasoning_parts.append(f"Additional candidates: {', '.join(techniques[1:])}")
-        
+                default_reasoning.append(f"Additional candidates: {', '.join(techniques[1:])}")
+
         if indicators:
-            reasoning_parts.append("Key Indicators:")
+            default_reasoning.append("Key Indicators:")
             for indicator in indicators[:3]:
-                reasoning_parts.append(f"  - {indicator}")
-        
-        return "\n".join(reasoning_parts)
+                default_reasoning.append(f"  - {indicator}")
+
+        default_text = "\n".join(default_reasoning)
+
+        system_prompt = "You are a cyber threat intelligence analyst mapping activity to MITRE ATT&CK."
+        user_prompt = (
+            f"Alert Type: {alert_type}\n"
+            f"Classification: {classification}\n"
+            f"Technique candidates: {techniques}\n"
+            f"Indicators: {indicators[:5]}\n\n"
+            "Provide a concise explanation (<=120 words) for the selected technique."
+        )
+
+        try:
+            return self.llm.generate(system_prompt=system_prompt, user_prompt=user_prompt)
+        except Exception as exc:
+            logger.debug("LLM reasoning failed: %s", exc)
+            return default_text
     
     def _calculate_confidence(self, indicators: List[str], techniques: List[str]) -> float:
         """Calculate confidence score (0.0 to 1.0)."""

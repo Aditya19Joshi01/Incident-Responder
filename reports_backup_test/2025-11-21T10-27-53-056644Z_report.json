@@ -1,0 +1,379 @@
+{
+  "timestamp": "2025-11-21T10:27:53.056644Z",
+  "alert": "Recon:EC2/PortProbeUnprotectedPort",
+  "severity": 5.0,
+  "parsed_details": {
+    "resource": {
+      "resourceType": "Instance",
+      "instanceDetails": {
+        "instanceId": "i-0123456789abcdef0",
+        "instanceType": "t2.micro",
+        "launchTime": "2025-02-20T10:00:00.000Z",
+        "platform": null,
+        "productCodes": [],
+        "iamInstanceProfile": {
+          "arn": "arn:aws:iam::123456789012:instance-profile/EC2InstanceProfile",
+          "id": "AIPAIEXAMPLE123"
+        },
+        "networkInterfaces": [
+          {
+            "subnetId": "subnet-0123456789abcdef0",
+            "privateIpAddresses": [
+              {
+                "privateIpAddress": "10.0.1.100"
+              }
+            ],
+            "publicIp": "203.0.113.1",
+            "networkInterfaceId": "eni-0123456789abcdef0",
+            "securityGroups": [
+              {
+                "groupId": "sg-0123456789abcdef0",
+                "groupName": "default"
+              }
+            ],
+            "ipv6Addresses": [],
+            "publicDnsName": "ec2-203-0-113-1.compute-1.amazonaws.com",
+            "vpcId": "vpc-0123456789abcdef0"
+          }
+        ],
+        "tags": [
+          {
+            "key": "Name",
+            "value": "WebServer-01"
+          }
+        ],
+        "instanceState": "running"
+      }
+    },
+    "metadata": {
+      "region": "us-east-1",
+      "account_id": "123456789012",
+      "timestamp": "",
+      "finding_id": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+    },
+    "key_indicators": []
+  },
+  "threat_classification": {
+    "category": "Reconnaissance",
+    "subcategory": "Network Scanning",
+    "description": "EC2 instance performing network scanning or port probing"
+  },
+  "mitre_mapping": {
+    "primary_technique": "T1595",
+    "technique_name": "Active Scanning",
+    "technique_description": "Adversaries may scan victim infrastructure to gather information that can be used during targeting. Active scanning can be used to detect open ports, services, and vulnerabilities.",
+    "tactic": "Reconnaissance",
+    "candidates": [
+      "T1595",
+      "T1046"
+    ]
+  },
+  "reasoning_trace": "Alert Type: Recon:EC2/PortProbeUnprotectedPort\nThreat Category: Reconnaissance\nSubcategory: Network Scanning\nPrimary MITRE Technique: T1595\nAdditional candidates: T1046",
+  "recommended_actions": [
+    {
+      "step": 1,
+      "action": "Enable Enhanced CloudTrail Logging",
+      "description": "Ensure CloudTrail is enabled for all regions and log file validation is turned on",
+      "aws_command": "aws cloudtrail create-trail --name <trail-name> --s3-bucket-name <bucket-name> --is-multi-region-trail",
+      "category": "Monitoring"
+    },
+    {
+      "step": 2,
+      "action": "Enable VPC Flow Logs",
+      "description": "Enable VPC Flow Logs for all VPCs to monitor network traffic",
+      "aws_command": "aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type s3 --log-destination <s3-arn>",
+      "category": "Monitoring"
+    },
+    {
+      "step": 3,
+      "action": "Review GuardDuty Findings",
+      "description": "Review all GuardDuty findings for related activity and patterns",
+      "aws_command": "aws guardduty list-findings --detector-id <detector-id>",
+      "category": "Investigation"
+    }
+  ],
+  "remediation_priority": "Medium",
+  "remediation_justification": "Threat Category: Reconnaissance\nMITRE Technique: T1595\n\nRemediation Strategy:\n1. Immediate containment to prevent further damage\n2. Forensic preservation for investigation\n3. Hardening to prevent similar attacks\n4. Enhanced monitoring for early detection\n\nTotal Steps: 3",
+  "confidence": 0.6,
+  "analysis_trace": {
+    "timestamp": "2025-11-21T10:27:53.056644Z",
+    "input_file": "data\\sample_guardduty_1.json",
+    "agents": [
+      {
+        "agent": "LogForensicsAgent",
+        "output": {
+          "alert_type": "Recon:EC2/PortProbeUnprotectedPort",
+          "severity": 5.0,
+          "resource_details": {
+            "resourceType": "Instance",
+            "instanceDetails": {
+              "instanceId": "i-0123456789abcdef0",
+              "instanceType": "t2.micro",
+              "launchTime": "2025-02-20T10:00:00.000Z",
+              "platform": null,
+              "productCodes": [],
+              "iamInstanceProfile": {
+                "arn": "arn:aws:iam::123456789012:instance-profile/EC2InstanceProfile",
+                "id": "AIPAIEXAMPLE123"
+              },
+              "networkInterfaces": [
+                {
+                  "subnetId": "subnet-0123456789abcdef0",
+                  "privateIpAddresses": [
+                    {
+                      "privateIpAddress": "10.0.1.100"
+                    }
+                  ],
+                  "publicIp": "203.0.113.1",
+                  "networkInterfaceId": "eni-0123456789abcdef0",
+                  "securityGroups": [
+                    {
+                      "groupId": "sg-0123456789abcdef0",
+                      "groupName": "default"
+                    }
+                  ],
+                  "ipv6Addresses": [],
+                  "publicDnsName": "ec2-203-0-113-1.compute-1.amazonaws.com",
+                  "vpcId": "vpc-0123456789abcdef0"
+                }
+              ],
+              "tags": [
+                {
+                  "key": "Name",
+                  "value": "WebServer-01"
+                }
+              ],
+              "instanceState": "running"
+            }
+          },
+          "suspicious_activity": {},
+          "metadata": {
+            "region": "us-east-1",
+            "account_id": "123456789012",
+            "timestamp": "",
+            "finding_id": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+          },
+          "correlated_logs": [],
+          "key_indicators": []
+        }
+      },
+      {
+        "agent": "ThreatAttributionAgent",
+        "output": {
+          "threat_classification": {
+            "category": "Reconnaissance",
+            "subcategory": "Network Scanning",
+            "description": "EC2 instance performing network scanning or port probing"
+          },
+          "mitre_technique_guess": "T1595",
+          "mitre_technique_candidates": [
+            "T1595",
+            "T1046"
+          ],
+          "reasoning": "Alert Type: Recon:EC2/PortProbeUnprotectedPort\nThreat Category: Reconnaissance\nSubcategory: Network Scanning\nPrimary MITRE Technique: T1595\nAdditional candidates: T1046",
+          "confidence": 0.6
+        }
+      },
+      {
+        "agent": "KnowledgeRetrievalAgent",
+        "output": {
+          "requested_technique": "T1595",
+          "exact_match": {
+            "technique_id": "T1595",
+            "name": "Active Scanning",
+            "description": "Adversaries may scan victim infrastructure to gather information that can be used during targeting. Active scanning can be used to detect open ports, services, and vulnerabilities.",
+            "tactic": "Reconnaissance",
+            "platform": "Cloud",
+            "data_sources": [
+              "Network Traffic",
+              "Application Logs"
+            ]
+          },
+          "similar_techniques": [
+            {
+              "technique_id": "T1105",
+              "name": "Ingress Tool Transfer",
+              "description": "Adversaries may transfer tools or other files from an external system into a compromised environment.",
+              "tactic": "Command and Control",
+              "platform": "Cloud",
+              "data_sources": [
+                "Network Traffic",
+                "File Monitoring"
+              ],
+              "similarity_score": 0.6499894438982339
+            },
+            {
+              "technique_id": "T1041",
+              "name": "Exfiltration Over C2 Channel",
+              "description": "Adversaries may steal data by exfiltrating it over an existing command and control channel.",
+              "tactic": "Exfiltration",
+              "platform": "Cloud",
+              "data_sources": [
+                "Network Traffic",
+                "Process Monitoring"
+              ],
+              "similarity_score": 0.6399801057987025
+            },
+            {
+              "technique_id": "T1046",
+              "name": "Network Service Scanning",
+              "description": "Adversaries may scan for open ports and services to identify running services and potential vulnerabilities.",
+              "tactic": "Discovery",
+              "platform": "Cloud",
+              "data_sources": [
+                "Network Traffic",
+                "Process Monitoring"
+              ],
+              "similarity_score": 0.6159716080709777
+            }
+          ],
+          "recommended_technique": {
+            "technique_id": "T1595",
+            "name": "Active Scanning",
+            "description": "Adversaries may scan victim infrastructure to gather information that can be used during targeting. Active scanning can be used to detect open ports, services, and vulnerabilities.",
+            "tactic": "Reconnaissance",
+            "platform": "Cloud",
+            "data_sources": [
+              "Network Traffic",
+              "Application Logs"
+            ]
+          }
+        }
+      },
+      {
+        "agent": "RemediationAgent",
+        "output": {
+          "remediation_steps": [
+            {
+              "step": 1,
+              "action": "Enable Enhanced CloudTrail Logging",
+              "description": "Ensure CloudTrail is enabled for all regions and log file validation is turned on",
+              "aws_command": "aws cloudtrail create-trail --name <trail-name> --s3-bucket-name <bucket-name> --is-multi-region-trail",
+              "category": "Monitoring"
+            },
+            {
+              "step": 2,
+              "action": "Enable VPC Flow Logs",
+              "description": "Enable VPC Flow Logs for all VPCs to monitor network traffic",
+              "aws_command": "aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type s3 --log-destination <s3-arn>",
+              "category": "Monitoring"
+            },
+            {
+              "step": 3,
+              "action": "Review GuardDuty Findings",
+              "description": "Review all GuardDuty findings for related activity and patterns",
+              "aws_command": "aws guardduty list-findings --detector-id <detector-id>",
+              "category": "Investigation"
+            }
+          ],
+          "justification": "Threat Category: Reconnaissance\nMITRE Technique: T1595\n\nRemediation Strategy:\n1. Immediate containment to prevent further damage\n2. Forensic preservation for investigation\n3. Hardening to prevent similar attacks\n4. Enhanced monitoring for early detection\n\nTotal Steps: 3",
+          "priority": "Medium",
+          "estimated_time": "1h 0m"
+        }
+      }
+    ]
+  },
+  "raw_finding": {
+    "schemaVersion": "2.0",
+    "accountId": "123456789012",
+    "region": "us-east-1",
+    "partition": "aws",
+    "id": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+    "arn": "arn:aws:guardduty:us-east-1:123456789012:detector/abc123def456/finding/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+    "type": "Recon:EC2/PortProbeUnprotectedPort",
+    "resource": {
+      "resourceType": "Instance",
+      "instanceDetails": {
+        "instanceId": "i-0123456789abcdef0",
+        "instanceType": "t2.micro",
+        "launchTime": "2025-02-20T10:00:00.000Z",
+        "platform": null,
+        "productCodes": [],
+        "iamInstanceProfile": {
+          "arn": "arn:aws:iam::123456789012:instance-profile/EC2InstanceProfile",
+          "id": "AIPAIEXAMPLE123"
+        },
+        "networkInterfaces": [
+          {
+            "subnetId": "subnet-0123456789abcdef0",
+            "privateIpAddresses": [
+              {
+                "privateIpAddress": "10.0.1.100"
+              }
+            ],
+            "publicIp": "203.0.113.1",
+            "networkInterfaceId": "eni-0123456789abcdef0",
+            "securityGroups": [
+              {
+                "groupId": "sg-0123456789abcdef0",
+                "groupName": "default"
+              }
+            ],
+            "ipv6Addresses": [],
+            "publicDnsName": "ec2-203-0-113-1.compute-1.amazonaws.com",
+            "vpcId": "vpc-0123456789abcdef0"
+          }
+        ],
+        "tags": [
+          {
+            "key": "Name",
+            "value": "WebServer-01"
+          }
+        ],
+        "instanceState": "running"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "abc123def456",
+      "action": {
+        "actionType": "NETWORK_CONNECTION",
+        "networkConnectionAction": {
+          "connectionDirection": "OUTBOUND",
+          "remoteIpDetails": {
+            "ipAddressV4": "198.51.100.42",
+            "organization": {
+              "asn": "64512",
+              "asnOrg": "Example ISP",
+              "isp": "Example ISP",
+              "org": "Example Organization"
+            },
+            "country": {
+              "countryName": "Unknown"
+            },
+            "city": {
+              "cityName": "Unknown"
+            },
+            "geoLocation": {
+              "lat": 0.0,
+              "lon": 0.0
+            }
+          },
+          "remotePortDetails": {
+            "port": 22,
+            "portName": "SSH"
+          },
+          "localPortDetails": {
+            "port": 49152,
+            "portName": "Unknown"
+          },
+          "protocol": "TCP"
+        }
+      },
+      "resourceRole": "TARGET",
+      "additionalInfo": {
+        "value": "{\"portProbeDetails\":[{\"remotePort\":22,\"remoteIp\":\"198.51.100.42\",\"localPort\":49152}]}",
+        "type": "default"
+      },
+      "eventFirstSeen": "2025-02-20T12:00:00.000Z",
+      "eventLastSeen": "2025-02-20T12:30:00.000Z",
+      "archived": false,
+      "count": 150
+    },
+    "severity": 5.0,
+    "createdAt": "2025-02-20T12:00:00.000Z",
+    "updatedAt": "2025-02-20T12:30:00.000Z",
+    "title": "EC2 instance i-0123456789abcdef0 is performing port probing attacks.",
+    "description": "EC2 instance i-0123456789abcdef0 is performing port probing attacks on remote host 198.51.100.42."
+  }
+}

@@ -1,0 +1,362 @@
+{
+  "timestamp": "2025-11-21T12:47:17.248172Z",
+  "alert": "Stealth:S3/BucketAnomaly",
+  "severity": 8.5,
+  "parsed_details": {
+    "resource": {
+      "resourceType": "S3",
+      "s3BucketDetails": [
+        {
+          "arn": "arn:aws:s3:::sensitive-data-bucket",
+          "name": "sensitive-data-bucket",
+          "type": "Bucket",
+          "createdAt": "2025-01-15T08:00:00.000Z",
+          "owner": {
+            "id": "0123456789abcdef0123456789abcdef01234567"
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "Production"
+            },
+            {
+              "key": "DataClassification",
+              "value": "Confidential"
+            }
+          ],
+          "defaultServerSideEncryption": {
+            "encryptionType": "AES256",
+            "kmsMasterKeyArn": null
+          },
+          "publicAccessPermission": {
+            "permissions": []
+          }
+        }
+      ],
+      "accessKeyDetails": {
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "principalId": "AIDAIOSFODNN7EXAMPLE",
+        "userName": "data-analyst",
+        "userType": "IAMUser"
+      }
+    },
+    "metadata": {
+      "region": "eu-west-1",
+      "account_id": "123456789012",
+      "timestamp": "",
+      "finding_id": "c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8"
+    },
+    "key_indicators": []
+  },
+  "threat_classification": {
+    "category": "Exfiltration",
+    "subcategory": "Data Exfiltration",
+    "description": "Suspicious S3 bucket access or data exfiltration"
+  },
+  "mitre_mapping": {
+    "primary_technique": "T1537",
+    "technique_name": "Transfer Data to Cloud Account",
+    "technique_description": "Adversaries may exfiltrate data by transferring it to a cloud account they control.",
+    "tactic": "Exfiltration",
+    "candidates": [
+      "T1537",
+      "T1041"
+    ]
+  },
+  "reasoning_trace": "Alert Type: Stealth:S3/BucketAnomaly\nThreat Category: Exfiltration\nSubcategory: Data Exfiltration\nPrimary MITRE Technique: T1537\nAdditional candidates: T1041",
+  "recommended_actions": [
+    {
+      "step": 1,
+      "action": "Enable Enhanced CloudTrail Logging",
+      "description": "Ensure CloudTrail is enabled for all regions and log file validation is turned on",
+      "aws_command": "aws cloudtrail create-trail --name <trail-name> --s3-bucket-name <bucket-name> --is-multi-region-trail",
+      "category": "Monitoring"
+    },
+    {
+      "step": 2,
+      "action": "Enable VPC Flow Logs",
+      "description": "Enable VPC Flow Logs for all VPCs to monitor network traffic",
+      "aws_command": "aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type s3 --log-destination <s3-arn>",
+      "category": "Monitoring"
+    },
+    {
+      "step": 3,
+      "action": "Review GuardDuty Findings",
+      "description": "Review all GuardDuty findings for related activity and patterns",
+      "aws_command": "aws guardduty list-findings --detector-id <detector-id>",
+      "category": "Investigation"
+    }
+  ],
+  "remediation_priority": "Critical",
+  "remediation_justification": "Threat Category: Exfiltration\nMITRE Technique: T1537\n\nRemediation Strategy:\n1. Immediate containment to prevent further damage\n2. Forensic preservation for investigation\n3. Hardening to prevent similar attacks\n4. Enhanced monitoring for early detection\n\nTotal Steps: 3",
+  "confidence": 0.6,
+  "analysis_trace": {
+    "timestamp": "2025-11-21T12:47:17.248172Z",
+    "input_file": "data/sample_guardduty_3.json",
+    "agents": [
+      {
+        "agent": "LogForensicsAgent",
+        "output": {
+          "alert_type": "Stealth:S3/BucketAnomaly",
+          "severity": 8.5,
+          "resource_details": {
+            "resourceType": "S3",
+            "s3BucketDetails": [
+              {
+                "arn": "arn:aws:s3:::sensitive-data-bucket",
+                "name": "sensitive-data-bucket",
+                "type": "Bucket",
+                "createdAt": "2025-01-15T08:00:00.000Z",
+                "owner": {
+                  "id": "0123456789abcdef0123456789abcdef01234567"
+                },
+                "tags": [
+                  {
+                    "key": "Environment",
+                    "value": "Production"
+                  },
+                  {
+                    "key": "DataClassification",
+                    "value": "Confidential"
+                  }
+                ],
+                "defaultServerSideEncryption": {
+                  "encryptionType": "AES256",
+                  "kmsMasterKeyArn": null
+                },
+                "publicAccessPermission": {
+                  "permissions": []
+                }
+              }
+            ],
+            "accessKeyDetails": {
+              "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+              "principalId": "AIDAIOSFODNN7EXAMPLE",
+              "userName": "data-analyst",
+              "userType": "IAMUser"
+            }
+          },
+          "suspicious_activity": {},
+          "metadata": {
+            "region": "eu-west-1",
+            "account_id": "123456789012",
+            "timestamp": "",
+            "finding_id": "c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8"
+          },
+          "correlated_logs": [],
+          "key_indicators": []
+        }
+      },
+      {
+        "agent": "ThreatAttributionAgent",
+        "output": {
+          "threat_classification": {
+            "category": "Exfiltration",
+            "subcategory": "Data Exfiltration",
+            "description": "Suspicious S3 bucket access or data exfiltration"
+          },
+          "mitre_technique_guess": "T1537",
+          "mitre_technique_candidates": [
+            "T1537",
+            "T1041"
+          ],
+          "reasoning": "Alert Type: Stealth:S3/BucketAnomaly\nThreat Category: Exfiltration\nSubcategory: Data Exfiltration\nPrimary MITRE Technique: T1537\nAdditional candidates: T1041",
+          "confidence": 0.6
+        }
+      },
+      {
+        "agent": "KnowledgeRetrievalAgent",
+        "output": {
+          "requested_technique": "T1537",
+          "exact_match": {
+            "technique_id": "T1537",
+            "name": "Transfer Data to Cloud Account",
+            "description": "Adversaries may exfiltrate data by transferring it to a cloud account they control.",
+            "tactic": "Exfiltration",
+            "platform": "Cloud",
+            "data_sources": [
+              "Cloud Service Logs",
+              "Network Traffic"
+            ]
+          },
+          "similar_techniques": [
+            {
+              "technique_id": "T1046",
+              "name": "Network Service Scanning",
+              "description": "Adversaries may scan for open ports and services to identify running services and potential vulnerabilities.",
+              "tactic": "Discovery",
+              "platform": "Cloud",
+              "data_sources": [
+                "Network Traffic",
+                "Process Monitoring"
+              ],
+              "similarity_score": 0.8269714066084853
+            },
+            {
+              "technique_id": "T1071",
+              "name": "Application Layer Protocol",
+              "description": "Adversaries may communicate using application layer protocols to avoid detection/network filtering by blending in with existing traffic.",
+              "tactic": "Command and Control",
+              "platform": "Cloud",
+              "data_sources": [
+                "Network Traffic",
+                "Packet Capture"
+              ],
+              "similarity_score": 0.7784365664470012
+            },
+            {
+              "technique_id": "T1537",
+              "name": "Transfer Data to Cloud Account",
+              "description": "Adversaries may exfiltrate data by transferring it to a cloud account they control.",
+              "tactic": "Exfiltration",
+              "platform": "Cloud",
+              "data_sources": [
+                "Cloud Service Logs",
+                "Network Traffic"
+              ],
+              "similarity_score": 0.7510997427526495
+            }
+          ],
+          "recommended_technique": {
+            "technique_id": "T1537",
+            "name": "Transfer Data to Cloud Account",
+            "description": "Adversaries may exfiltrate data by transferring it to a cloud account they control.",
+            "tactic": "Exfiltration",
+            "platform": "Cloud",
+            "data_sources": [
+              "Cloud Service Logs",
+              "Network Traffic"
+            ]
+          }
+        }
+      },
+      {
+        "agent": "RemediationAgent",
+        "output": {
+          "remediation_steps": [
+            {
+              "step": 1,
+              "action": "Enable Enhanced CloudTrail Logging",
+              "description": "Ensure CloudTrail is enabled for all regions and log file validation is turned on",
+              "aws_command": "aws cloudtrail create-trail --name <trail-name> --s3-bucket-name <bucket-name> --is-multi-region-trail",
+              "category": "Monitoring"
+            },
+            {
+              "step": 2,
+              "action": "Enable VPC Flow Logs",
+              "description": "Enable VPC Flow Logs for all VPCs to monitor network traffic",
+              "aws_command": "aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type s3 --log-destination <s3-arn>",
+              "category": "Monitoring"
+            },
+            {
+              "step": 3,
+              "action": "Review GuardDuty Findings",
+              "description": "Review all GuardDuty findings for related activity and patterns",
+              "aws_command": "aws guardduty list-findings --detector-id <detector-id>",
+              "category": "Investigation"
+            }
+          ],
+          "justification": "Threat Category: Exfiltration\nMITRE Technique: T1537\n\nRemediation Strategy:\n1. Immediate containment to prevent further damage\n2. Forensic preservation for investigation\n3. Hardening to prevent similar attacks\n4. Enhanced monitoring for early detection\n\nTotal Steps: 3",
+          "priority": "Critical",
+          "estimated_time": "1h 0m"
+        }
+      }
+    ]
+  },
+  "raw_finding": {
+    "schemaVersion": "2.0",
+    "accountId": "123456789012",
+    "region": "eu-west-1",
+    "partition": "aws",
+    "id": "c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8",
+    "arn": "arn:aws:guardduty:eu-west-1:123456789012:detector/ghi789jkl012/finding/c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8",
+    "type": "Stealth:S3/BucketAnomaly",
+    "resource": {
+      "resourceType": "S3",
+      "s3BucketDetails": [
+        {
+          "arn": "arn:aws:s3:::sensitive-data-bucket",
+          "name": "sensitive-data-bucket",
+          "type": "Bucket",
+          "createdAt": "2025-01-15T08:00:00.000Z",
+          "owner": {
+            "id": "0123456789abcdef0123456789abcdef01234567"
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "Production"
+            },
+            {
+              "key": "DataClassification",
+              "value": "Confidential"
+            }
+          ],
+          "defaultServerSideEncryption": {
+            "encryptionType": "AES256",
+            "kmsMasterKeyArn": null
+          },
+          "publicAccessPermission": {
+            "permissions": []
+          }
+        }
+      ],
+      "accessKeyDetails": {
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "principalId": "AIDAIOSFODNN7EXAMPLE",
+        "userName": "data-analyst",
+        "userType": "IAMUser"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "ghi789jkl012",
+      "action": {
+        "actionType": "AWS_API_CALL",
+        "awsApiCallAction": {
+          "api": "GetObject",
+          "serviceName": "s3",
+          "callerType": "Remote IP",
+          "remoteIpDetails": {
+            "ipAddressV4": "203.0.113.50",
+            "organization": {
+              "asn": "64514",
+              "asnOrg": "External Organization",
+              "isp": "External ISP",
+              "org": "External Organization"
+            },
+            "country": {
+              "countryName": "Unknown"
+            },
+            "city": {
+              "cityName": "Unknown"
+            },
+            "geoLocation": {
+              "lat": 0.0,
+              "lon": 0.0
+            }
+          },
+          "affectedResources": {
+            "S3": {
+              "bucketArn": "arn:aws:s3:::sensitive-data-bucket"
+            }
+          }
+        }
+      },
+      "resourceRole": "TARGET",
+      "additionalInfo": {
+        "value": "{\"unusual\":true,\"dataExfiltration\":true,\"largeDataTransfer\":true}",
+        "type": "default"
+      },
+      "eventFirstSeen": "2025-02-20T09:00:00.000Z",
+      "eventLastSeen": "2025-02-20T09:30:00.000Z",
+      "archived": false,
+      "count": 200
+    },
+    "severity": 8.5,
+    "createdAt": "2025-02-20T09:00:00.000Z",
+    "updatedAt": "2025-02-20T09:30:00.000Z",
+    "title": "Unusual API activity detected in S3 bucket sensitive-data-bucket.",
+    "description": "Unusual API activity detected in S3 bucket sensitive-data-bucket. This could indicate data exfiltration."
+  }
+}

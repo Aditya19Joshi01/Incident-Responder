@@ -180,6 +180,75 @@ IncidentResponder-ai/
    python orchestrator/orchestrator.py data/sample_guardduty_1.json
    ```
 
+## 🤖 LLM Configuration
+
+All LLM interactions flow through the modular `llm/` provider layer. Configure providers via `config.yaml` (checked into the repo) or environment variables (which override the YAML file).
+
+### Configuration Fields (`config.yaml`)
+
+```yaml
+ai_provider: "lmstudio"        # Options: openai, anthropic, gemini, lmstudio, ollama, dummy
+ai_endpoint: "http://localhost:1234"
+ai_api_key: null
+model_name: "local-model"
+```
+
+### Environment Overrides
+
+| Variable         | Description                                   |
+|------------------|-----------------------------------------------|
+| `AI_PROVIDER`     | Provider name (`openai`, `anthropic`, etc.)   |
+| `AI_API_KEY`      | API key for cloud providers                   |
+| `AI_ENDPOINT`     | Custom endpoint for LM Studio / Ollama        |
+| `AI_MODEL_NAME`   | Model identifier                              |
+
+### Provider Examples
+
+**Fallback / Rule-Based Mode (default)**
+```bash
+set AI_PROVIDER=dummy
+python orchestrator/orchestrator.py data/sample_guardduty_1.json
+```
+
+**LM Studio (local)**
+```bash
+set AI_PROVIDER=lmstudio
+set AI_ENDPOINT=http://localhost:1234
+set AI_MODEL_NAME=local-model
+python orchestrator/orchestrator.py data/sample_guardduty_1.json
+```
+
+**OpenAI**
+```bash
+set AI_PROVIDER=openai
+set AI_API_KEY=sk-your-key
+set AI_MODEL_NAME=gpt-4o-mini
+python orchestrator/orchestrator.py data/sample_guardduty_1.json
+```
+
+**Anthropic**
+```bash
+set AI_PROVIDER=anthropic
+set AI_API_KEY=sk-ant-your-key
+set AI_MODEL_NAME=claude-3-sonnet-20240229
+```
+
+**Gemini**
+```bash
+set AI_PROVIDER=gemini
+set AI_API_KEY=your-google-key
+set AI_MODEL_NAME=gemini-1.5-flash
+```
+
+**Ollama**
+```bash
+set AI_PROVIDER=ollama
+set AI_ENDPOINT=http://localhost:11434
+set AI_MODEL_NAME=llama3
+```
+
+If a provider or API key is missing, the system automatically falls back to the `DummyProvider`, which returns deterministic rule-based messages so the agents can continue operating offline.
+
 ### Example Output
 
 ```

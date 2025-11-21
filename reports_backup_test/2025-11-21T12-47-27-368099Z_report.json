@@ -1,0 +1,389 @@
+{
+  "timestamp": "2025-11-21T12:47:27.368099Z",
+  "alert": "Backdoor:EC2/DenialOfService.Tcp",
+  "severity": 9.0,
+  "parsed_details": {
+    "resource": {
+      "resourceType": "Instance",
+      "instanceDetails": {
+        "instanceId": "i-9876543210fedcba",
+        "instanceType": "t3.medium",
+        "launchTime": "2025-02-18T14:00:00.000Z",
+        "platform": null,
+        "productCodes": [],
+        "iamInstanceProfile": {
+          "arn": "arn:aws:iam::123456789012:instance-profile/AppServerProfile",
+          "id": "AIPAIEXAMPLE456"
+        },
+        "networkInterfaces": [
+          {
+            "subnetId": "subnet-9876543210fedcba",
+            "privateIpAddresses": [
+              {
+                "privateIpAddress": "10.0.2.50"
+              }
+            ],
+            "publicIp": "203.0.113.100",
+            "networkInterfaceId": "eni-9876543210fedcba",
+            "securityGroups": [
+              {
+                "groupId": "sg-9876543210fedcba",
+                "groupName": "app-server-sg"
+              }
+            ],
+            "ipv6Addresses": [],
+            "publicDnsName": "ec2-203-0-113-100.compute-1.amazonaws.com",
+            "vpcId": "vpc-9876543210fedcba"
+          }
+        ],
+        "tags": [
+          {
+            "key": "Name",
+            "value": "AppServer-02"
+          },
+          {
+            "key": "Environment",
+            "value": "Production"
+          }
+        ],
+        "instanceState": "running"
+      }
+    },
+    "metadata": {
+      "region": "ap-southeast-1",
+      "account_id": "123456789012",
+      "timestamp": "",
+      "finding_id": "d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9"
+    },
+    "key_indicators": []
+  },
+  "threat_classification": {
+    "category": "Unknown",
+    "subcategory": "",
+    "description": ""
+  },
+  "mitre_mapping": {
+    "primary_technique": "T1078",
+    "technique_name": "Valid Accounts",
+    "technique_description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+    "tactic": "Initial Access",
+    "candidates": [
+      "T1078"
+    ]
+  },
+  "reasoning_trace": "Alert Type: Backdoor:EC2/DenialOfService.Tcp\nThreat Category: Unknown\nSubcategory: \nPrimary MITRE Technique: T1078",
+  "recommended_actions": [
+    {
+      "step": 1,
+      "action": "Enable Enhanced CloudTrail Logging",
+      "description": "Ensure CloudTrail is enabled for all regions and log file validation is turned on",
+      "aws_command": "aws cloudtrail create-trail --name <trail-name> --s3-bucket-name <bucket-name> --is-multi-region-trail",
+      "category": "Monitoring"
+    },
+    {
+      "step": 2,
+      "action": "Enable VPC Flow Logs",
+      "description": "Enable VPC Flow Logs for all VPCs to monitor network traffic",
+      "aws_command": "aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type s3 --log-destination <s3-arn>",
+      "category": "Monitoring"
+    },
+    {
+      "step": 3,
+      "action": "Review GuardDuty Findings",
+      "description": "Review all GuardDuty findings for related activity and patterns",
+      "aws_command": "aws guardduty list-findings --detector-id <detector-id>",
+      "category": "Investigation"
+    }
+  ],
+  "remediation_priority": "Critical",
+  "remediation_justification": "Threat Category: Unknown\nMITRE Technique: T1078\n\nRemediation Strategy:\n1. Immediate containment to prevent further damage\n2. Forensic preservation for investigation\n3. Hardening to prevent similar attacks\n4. Enhanced monitoring for early detection\n\nTotal Steps: 3",
+  "confidence": 0.5,
+  "analysis_trace": {
+    "timestamp": "2025-11-21T12:47:27.368099Z",
+    "input_file": "data/sample_guardduty_4.json",
+    "agents": [
+      {
+        "agent": "LogForensicsAgent",
+        "output": {
+          "alert_type": "Backdoor:EC2/DenialOfService.Tcp",
+          "severity": 9.0,
+          "resource_details": {
+            "resourceType": "Instance",
+            "instanceDetails": {
+              "instanceId": "i-9876543210fedcba",
+              "instanceType": "t3.medium",
+              "launchTime": "2025-02-18T14:00:00.000Z",
+              "platform": null,
+              "productCodes": [],
+              "iamInstanceProfile": {
+                "arn": "arn:aws:iam::123456789012:instance-profile/AppServerProfile",
+                "id": "AIPAIEXAMPLE456"
+              },
+              "networkInterfaces": [
+                {
+                  "subnetId": "subnet-9876543210fedcba",
+                  "privateIpAddresses": [
+                    {
+                      "privateIpAddress": "10.0.2.50"
+                    }
+                  ],
+                  "publicIp": "203.0.113.100",
+                  "networkInterfaceId": "eni-9876543210fedcba",
+                  "securityGroups": [
+                    {
+                      "groupId": "sg-9876543210fedcba",
+                      "groupName": "app-server-sg"
+                    }
+                  ],
+                  "ipv6Addresses": [],
+                  "publicDnsName": "ec2-203-0-113-100.compute-1.amazonaws.com",
+                  "vpcId": "vpc-9876543210fedcba"
+                }
+              ],
+              "tags": [
+                {
+                  "key": "Name",
+                  "value": "AppServer-02"
+                },
+                {
+                  "key": "Environment",
+                  "value": "Production"
+                }
+              ],
+              "instanceState": "running"
+            }
+          },
+          "suspicious_activity": {},
+          "metadata": {
+            "region": "ap-southeast-1",
+            "account_id": "123456789012",
+            "timestamp": "",
+            "finding_id": "d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9"
+          },
+          "correlated_logs": [],
+          "key_indicators": []
+        }
+      },
+      {
+        "agent": "ThreatAttributionAgent",
+        "output": {
+          "threat_classification": {
+            "category": "Unknown",
+            "subcategory": "",
+            "description": ""
+          },
+          "mitre_technique_guess": "T1078",
+          "mitre_technique_candidates": [
+            "T1078"
+          ],
+          "reasoning": "Alert Type: Backdoor:EC2/DenialOfService.Tcp\nThreat Category: Unknown\nSubcategory: \nPrimary MITRE Technique: T1078",
+          "confidence": 0.5
+        }
+      },
+      {
+        "agent": "KnowledgeRetrievalAgent",
+        "output": {
+          "requested_technique": "T1078",
+          "exact_match": {
+            "technique_id": "T1078",
+            "name": "Valid Accounts",
+            "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+            "tactic": "Initial Access",
+            "platform": "Cloud",
+            "data_sources": [
+              "Authentication Logs",
+              "Cloud Service Logs"
+            ]
+          },
+          "similar_techniques": [
+            {
+              "technique_id": "T1496",
+              "name": "Resource Hijacking",
+              "description": "Adversaries may leverage cloud resources for cryptocurrency mining or other resource-intensive tasks.",
+              "tactic": "Impact",
+              "platform": "Cloud",
+              "data_sources": [
+                "Cloud Service Logs",
+                "Process Monitoring"
+              ],
+              "similarity_score": 0.7237675130408554
+            },
+            {
+              "technique_id": "T1046",
+              "name": "Network Service Scanning",
+              "description": "Adversaries may scan for open ports and services to identify running services and potential vulnerabilities.",
+              "tactic": "Discovery",
+              "platform": "Cloud",
+              "data_sources": [
+                "Network Traffic",
+                "Process Monitoring"
+              ],
+              "similarity_score": 0.6564145624550561
+            },
+            {
+              "technique_id": "T1484",
+              "name": "Domain Policy Modification",
+              "description": "Adversaries may modify domain policies to maintain persistence or evade defenses.",
+              "tactic": "Persistence",
+              "platform": "Cloud",
+              "data_sources": [
+                "Cloud Service Logs",
+                "Policy Logs"
+              ],
+              "similarity_score": 0.5944559418311943
+            }
+          ],
+          "recommended_technique": {
+            "technique_id": "T1078",
+            "name": "Valid Accounts",
+            "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+            "tactic": "Initial Access",
+            "platform": "Cloud",
+            "data_sources": [
+              "Authentication Logs",
+              "Cloud Service Logs"
+            ]
+          }
+        }
+      },
+      {
+        "agent": "RemediationAgent",
+        "output": {
+          "remediation_steps": [
+            {
+              "step": 1,
+              "action": "Enable Enhanced CloudTrail Logging",
+              "description": "Ensure CloudTrail is enabled for all regions and log file validation is turned on",
+              "aws_command": "aws cloudtrail create-trail --name <trail-name> --s3-bucket-name <bucket-name> --is-multi-region-trail",
+              "category": "Monitoring"
+            },
+            {
+              "step": 2,
+              "action": "Enable VPC Flow Logs",
+              "description": "Enable VPC Flow Logs for all VPCs to monitor network traffic",
+              "aws_command": "aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type s3 --log-destination <s3-arn>",
+              "category": "Monitoring"
+            },
+            {
+              "step": 3,
+              "action": "Review GuardDuty Findings",
+              "description": "Review all GuardDuty findings for related activity and patterns",
+              "aws_command": "aws guardduty list-findings --detector-id <detector-id>",
+              "category": "Investigation"
+            }
+          ],
+          "justification": "Threat Category: Unknown\nMITRE Technique: T1078\n\nRemediation Strategy:\n1. Immediate containment to prevent further damage\n2. Forensic preservation for investigation\n3. Hardening to prevent similar attacks\n4. Enhanced monitoring for early detection\n\nTotal Steps: 3",
+          "priority": "Critical",
+          "estimated_time": "1h 0m"
+        }
+      }
+    ]
+  },
+  "raw_finding": {
+    "schemaVersion": "2.0",
+    "accountId": "123456789012",
+    "region": "ap-southeast-1",
+    "partition": "aws",
+    "id": "d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9",
+    "arn": "arn:aws:guardduty:ap-southeast-1:123456789012:detector/jkl012mno345/finding/d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9",
+    "type": "Backdoor:EC2/DenialOfService.Tcp",
+    "resource": {
+      "resourceType": "Instance",
+      "instanceDetails": {
+        "instanceId": "i-9876543210fedcba",
+        "instanceType": "t3.medium",
+        "launchTime": "2025-02-18T14:00:00.000Z",
+        "platform": null,
+        "productCodes": [],
+        "iamInstanceProfile": {
+          "arn": "arn:aws:iam::123456789012:instance-profile/AppServerProfile",
+          "id": "AIPAIEXAMPLE456"
+        },
+        "networkInterfaces": [
+          {
+            "subnetId": "subnet-9876543210fedcba",
+            "privateIpAddresses": [
+              {
+                "privateIpAddress": "10.0.2.50"
+              }
+            ],
+            "publicIp": "203.0.113.100",
+            "networkInterfaceId": "eni-9876543210fedcba",
+            "securityGroups": [
+              {
+                "groupId": "sg-9876543210fedcba",
+                "groupName": "app-server-sg"
+              }
+            ],
+            "ipv6Addresses": [],
+            "publicDnsName": "ec2-203-0-113-100.compute-1.amazonaws.com",
+            "vpcId": "vpc-9876543210fedcba"
+          }
+        ],
+        "tags": [
+          {
+            "key": "Name",
+            "value": "AppServer-02"
+          },
+          {
+            "key": "Environment",
+            "value": "Production"
+          }
+        ],
+        "instanceState": "running"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "jkl012mno345",
+      "action": {
+        "actionType": "NETWORK_CONNECTION",
+        "networkConnectionAction": {
+          "connectionDirection": "OUTBOUND",
+          "remoteIpDetails": {
+            "ipAddressV4": "198.51.100.100",
+            "organization": {
+              "asn": "64515",
+              "asnOrg": "Malicious Network",
+              "isp": "Malicious ISP",
+              "org": "Malicious Organization"
+            },
+            "country": {
+              "countryName": "Unknown"
+            },
+            "city": {
+              "cityName": "Unknown"
+            },
+            "geoLocation": {
+              "lat": 0.0,
+              "lon": 0.0
+            }
+          },
+          "remotePortDetails": {
+            "port": 80,
+            "portName": "HTTP"
+          },
+          "localPortDetails": {
+            "port": 443,
+            "portName": "HTTPS"
+          },
+          "protocol": "TCP"
+        }
+      },
+      "resourceRole": "TARGET",
+      "additionalInfo": {
+        "value": "{\"attackType\":\"DoS\",\"packetCount\":10000}",
+        "type": "default"
+      },
+      "eventFirstSeen": "2025-02-20T13:00:00.000Z",
+      "eventLastSeen": "2025-02-20T13:15:00.000Z",
+      "archived": false,
+      "count": 10000
+    },
+    "severity": 9.0,
+    "createdAt": "2025-02-20T13:00:00.000Z",
+    "updatedAt": "2025-02-20T13:15:00.000Z",
+    "title": "EC2 instance i-9876543210fedcba is performing denial of service attacks.",
+    "description": "EC2 instance i-9876543210fedcba is performing denial of service attacks against remote host 198.51.100.100."
+  }
+}

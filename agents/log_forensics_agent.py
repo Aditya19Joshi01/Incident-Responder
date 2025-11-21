@@ -7,6 +7,8 @@ import os
 from typing import Dict, Any, List
 import logging
 
+from llm.factory import get_llm
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,6 +23,7 @@ class LogForensicsAgent:
             logs_dir: Directory containing simulated CloudTrail/VPC logs
         """
         self.logs_dir = logs_dir
+        self.llm = get_llm()
     
     def analyze(self, guardduty_finding: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -52,7 +55,8 @@ class LogForensicsAgent:
                 "finding_id": parsed.get("id", "")
             },
             "correlated_logs": correlated_logs,
-            "key_indicators": self._extract_indicators(parsed, correlated_logs)
+            "key_indicators": self._extract_indicators(parsed, correlated_logs),
+            "llm_analysis": self._generate_llm_insight(parsed, correlated_logs)
         }
         
         logger.info(f"Forensics analysis complete. Alert type: {summary['alert_type']}")
@@ -212,4 +216,22 @@ class LogForensicsAgent:
             indicators.append(f"S3 bucket {resource.get('bucket_name', 'Unknown')} accessed")
         
         return indicators
+
+    def _generate_llm_insight(self, parsed: Dict[str, Any], logs: List[Dict[str, Any]]) -> str:
+        """
+        Use the configured LLM to summarize findings.
+        """
+        system_prompt = "You are a SOC Tier-1 analyst summarizing AWS GuardDuty findings."
+        user_prompt = (
+            "Finding metadata:\n"
+            f"{json.dumps(parsed, indent=2)}\n\n"
+            "Correlated logs:\n"
+            f"{json.dumps(logs[:5], indent=2)}\n\n"
+            "Provide a concise narrative (<=120 words) highlighting key suspicious behaviors."
+        )
+        try:
+            return self.llm.generate(system_prompt=system_prompt, user_prompt=user_prompt)
+        except Exception as exc:
+            logger.debug("LLM insight generation failed: %s", exc)
+            return "LLM insight unavailable; using rule-based indicators only."
 

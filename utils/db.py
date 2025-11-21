@@ -61,7 +61,11 @@ class IncidentDB:
         
         timestamp = report.get("timestamp", datetime.utcnow().isoformat())
         alert_type = report.get("alert", "Unknown")
-        mitre_technique = report.get("mitre_mapping", "")
+        mitre_mapping = report.get("mitre_mapping", {}) or {}
+        if isinstance(mitre_mapping, dict):
+            mitre_technique = mitre_mapping.get("primary_technique") or json.dumps(mitre_mapping)
+        else:
+            mitre_technique = str(mitre_mapping)
         summary = json.dumps(report.get("parsed_details", {}))
         remediation = json.dumps(report.get("recommended_actions", []))
         full_trace = json.dumps(report)

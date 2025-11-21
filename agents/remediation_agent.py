@@ -5,6 +5,8 @@ Remediation Agent - Generates AWS remediation recommendations.
 import logging
 from typing import Dict, Any, List
 
+from llm.factory import get_llm
+
 logger = logging.getLogger(__name__)
 
 
@@ -13,7 +15,7 @@ class RemediationAgent:
     
     def __init__(self):
         """Initialize the Remediation Agent."""
-        pass
+        self.llm = get_llm()
     
     def generate(self, threat_classification: Dict[str, Any], 
                  mitre_technique: Dict[str, Any],
@@ -45,7 +47,8 @@ class RemediationAgent:
             "remediation_steps": steps,
             "justification": justification,
             "priority": self._calculate_priority(threat_classification, forensics_summary),
-            "estimated_time": self._estimate_time(steps)
+            "estimated_time": self._estimate_time(steps),
+            "llm_summary": self._generate_llm_summary(threat_classification, mitre_technique, steps),
         }
         
         logger.info(f"Generated {len(steps)} remediation steps")
@@ -207,4 +210,26 @@ class RemediationAgent:
             return f"{hours}h {minutes}m"
         else:
             return f"{minutes}m"
+
+    def _generate_llm_summary(
+        self,
+        classification: Dict[str, Any],
+        mitre_technique: Dict[str, Any],
+        steps: List[Dict[str, Any]],
+    ) -> str:
+        """
+        Use LLM to create a concise remediation narrative.
+        """
+        system_prompt = "You are a senior cloud security engineer summarizing remediation plans."
+        user_prompt = (
+            f"Threat classification: {classification}\n"
+            f"MITRE technique: {mitre_technique}\n"
+            f"Remediation steps: {steps[:5]}\n"
+            "Provide a brief justification and escalation guidance in <=120 words."
+        )
+        try:
+            return self.llm.generate(system_prompt=system_prompt, user_prompt=user_prompt)
+        except Exception as exc:
+            logger.debug("LLM remediation summary failed: %s", exc)
+            return "LLM summary unavailable."
 

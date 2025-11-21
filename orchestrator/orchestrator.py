@@ -50,11 +50,13 @@ class IncidentOrchestrator:
         self.knowledge_agent = KnowledgeRetrievalAgent(self.embedding_store)
         self.remediation_agent = RemediationAgent()
         
-        # Initialize database
-        self.db = IncidentDB()
-        
-        # Create reports directory
-        os.makedirs("reports", exist_ok=True)
+        # Initialize database (support custom path via env)
+        db_path = os.getenv("INCIDENT_DB_PATH", "incident_reports.db")
+        self.db = IncidentDB(db_path=db_path)
+
+        # Create reports directory (customizable via env)
+        self.reports_dir = os.getenv("REPORTS_DIR", "reports")
+        os.makedirs(self.reports_dir, exist_ok=True)
     
     def process_incident(self, guardduty_finding_path: str) -> Dict[str, Any]:
         """
@@ -177,8 +179,8 @@ class IncidentOrchestrator:
         """Save report to JSON file and database."""
         # Save to JSON file
         timestamp_str = report["timestamp"].replace(":", "-").replace(".", "-")
-        filename = f"reports/{timestamp_str}_report.json"
-        
+        filename = os.path.join(self.reports_dir, f"{timestamp_str}_report.json")
+
         with open(filename, 'w') as f:
             json.dump(report, f, indent=2)
         
@@ -229,7 +231,11 @@ def main():
         print(f"Remediation Priority: {report['remediation_priority']}")
         print(f"Remediation Steps: {len(report['recommended_actions'])}")
         print("="*60)
-        print(f"\nFull report saved to: reports/{report['timestamp'].replace(':', '-').replace('.', '-')}_report.json")
+        saved_path = os.path.join(
+            orchestrator.reports_dir,
+            f"{report['timestamp'].replace(':', '-').replace('.', '-')}_report.json",
+        )
+        print(f"\nFull report saved to: {saved_path}")
         
     except Exception as e:
         logger.error(f"Error processing incident: {e}", exc_info=True)
