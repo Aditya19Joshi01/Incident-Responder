@@ -102,12 +102,17 @@ class KnowledgeRetrievalAgent:
             return "No MITRE techniques found."
 
         target = exact_match or search_results[0]
-        system_prompt = "You are a MITRE ATT&CK assistant providing concise explanations."
+        system_prompt = ("You are a professional MITRE ATT&CK analyst. Produce a concise, structured, and "
+                         "authoritative explanation of why the selected MITRE technique aligns with the observed "
+                         "behavior. Use a formal tone suitable for incident response reports. Avoid speculation, avoid "
+                         "unnecessary detail, and keep the analysis focused and fact-based. Output should be a short "
+                         "paragraph or a brief markdown section, not JSON.")
         user_prompt = (
             f"Technique ID: {technique_id}\n"
             f"Primary candidate: {target}\n"
-            f"Other candidates: {search_results[1:3]}\n"
-            "Summarize why this technique matches the observed behavior in <=100 words."
+            f"Other candidates: {search_results[1:3]}\n\n"
+            "Provide a professional explanation (<=100 words) summarizing why this technique is the best match. "
+            "Write in a clear, report-ready format using concise language."
         )
         try:
             return self.llm.generate(system_prompt=system_prompt, user_prompt=user_prompt)

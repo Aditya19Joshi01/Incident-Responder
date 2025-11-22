@@ -1,5 +1,5 @@
-ai_provider: "dummy"
-ai_endpoint: "http://localhost:1234"
+ai_provider: "lmstudio"
+ai_endpoint: "http://127.0.0.1:1234"
 ai_api_key: null
-model_name: "local-model"
+model_name: "google/gemma-3-4b"
 

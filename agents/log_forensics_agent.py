@@ -221,7 +221,10 @@ class LogForensicsAgent:
         """
         Use the configured LLM to summarize findings.
         """
-        system_prompt = "You are a SOC Tier-1 analyst summarizing AWS GuardDuty findings."
+        system_prompt = ("You are a SOC Tier-1 cyber defense analyst generating a concise investigation summary suitable "
+                         "for an incident response report. Highlight only the most relevant behaviors and indicators. "
+                         "Maintain a professional, objective tone. Avoid speculation, filler language, or overly "
+                         "detailed logs. Keep the summary succinct and structured using short paragraphs or markdown headings. No JSON.")
         user_prompt = (
             "Finding metadata:\n"
             f"{json.dumps(parsed, indent=2)}\n\n"

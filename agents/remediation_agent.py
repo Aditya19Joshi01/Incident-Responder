@@ -220,12 +220,18 @@ class RemediationAgent:
         """
         Use LLM to create a concise remediation narrative.
         """
-        system_prompt = "You are a senior cloud security engineer summarizing remediation plans."
+        system_prompt = ("You are a senior cloud security engineer producing a clear and concise remediation summary "
+                         "for inclusion in an incident response report. Provide structured, actionable guidance with "
+                         "brief justification. Use a professional, authoritative tone. Keep the content succinct, "
+                         "focused, and free from unnecessary detail. Output should be formatted as short paragraphs "
+                         "or simple markdown sections. No JSON.")
+
         user_prompt = (
             f"Threat classification: {classification}\n"
             f"MITRE technique: {mitre_technique}\n"
-            f"Remediation steps: {steps[:5]}\n"
-            "Provide a brief justification and escalation guidance in <=120 words."
+            f"Remediation steps: {steps[:5]}\n\n"
+            "Provide a concise remediation summary (<=120 words) explaining the security impact and "
+            "the recommended actions. Keep it professional and suitable for a cloud incident report."
         )
         try:
             return self.llm.generate(system_prompt=system_prompt, user_prompt=user_prompt)

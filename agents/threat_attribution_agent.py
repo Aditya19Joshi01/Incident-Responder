@@ -184,13 +184,19 @@ class ThreatAttributionAgent:
 
         default_text = "\n".join(default_reasoning)
 
-        system_prompt = "You are a cyber threat intelligence analyst mapping activity to MITRE ATT&CK."
+        system_prompt = ("You are a cyber threat intelligence analyst providing a concise MITRE ATT&CK attribution"
+                         " explanation. Your output must be professional, factual, and written in a report-ready "
+                         "style. Summaries should focus on why the selected technique aligns with the alert "
+                         "indicators. Use short paragraphs or simple markdown formatting. Do not output lists of "
+                         "random techniques, ask questions, or provide follow-up suggestions. Keep the response "
+                         "under 120 words. No JSON.")
         user_prompt = (
             f"Alert Type: {alert_type}\n"
             f"Classification: {classification}\n"
             f"Technique candidates: {techniques}\n"
             f"Indicators: {indicators[:5]}\n\n"
-            "Provide a concise explanation (<=120 words) for the selected technique."
+            "Provide a concise (<=120 words), professional explanation of why the primary MITRE technique "
+            "is the best match. Use formal, report-ready language."
         )
 
         try:
